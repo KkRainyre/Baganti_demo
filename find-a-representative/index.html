@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WR41BZEE5X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WR41BZEE5X');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a LumosCielo Representative | LumosCielo™</title>
+    <meta name="description" content="Find a LumosCielo representative near you. Get product guidance, specification support, and coordinated delivery from local experts.">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" href="../favicon-32.png" type="image/png" sizes="32x32" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="../favicon-dark-32.png" type="image/png" sizes="32x32" media="(prefers-color-scheme: dark)">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Open+Sans:wght@400;500;600&family=Raleway:wght@600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <style>
+        /* BAGANTI brand palette */
+        :root {
+            --navy: #071A3A;      /* Blueprint Navy */
+            --black: #09090C;     /* Baganti Black */
+            --white: #F1F1F1;     /* Studio White */
+            --blue: #0F4199;      /* Realization Blue */
+            --cyan: #25BDD1;      /* Signal Cyan */
+            --title: 'Michroma', sans-serif;
+            --heading: 'Raleway', sans-serif;
+            --body: 'Open Sans', Arial, sans-serif;
+            --mono: 'Roboto Mono', monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--body); color: var(--navy); background: var(--white); -webkit-font-smoothing: antialiased; }
+        a { color: inherit; text-decoration: none; }
+
+        /* ---------- Hero ---------- */
+        .rep-hero {
+            background: var(--navy);
+            color: var(--white);
+            text-align: center;
+            padding: 100px 24px 96px;
+        }
+        .rep-hero h1 {
+            font-family: var(--title);
+            font-weight: 400;
+            font-size: clamp(30px, 4.6vw, 62px);
+            line-height: 1.02;
+            letter-spacing: -.01em;
+        }
+        .rep-hero p {
+            margin: 26px auto 0;
+            max-width: 460px;
+            font-size: 15px;
+            line-height: 1.45;
+        }
+
+        /* ---------- Finder ---------- */
+        .finder { max-width: 1180px; margin: 0 auto; padding: 110px 40px; }
+        .finder-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 24px; flex-wrap: wrap; padding-left: 60px;
+        }
+        .finder-head h2 {
+            font-family: var(--heading); font-weight: 700; font-size: 30px;
+            color: var(--navy); text-transform: uppercase;
+        }
+        .search { position: relative; width: min(516px, 100%); }
+        .search input {
+            width: 100%; height: 58px; border: 2px solid var(--black);
+            border-radius: 999px; padding: 0 56px 0 40px; background: #fff;
+            font: 400 19px var(--body); color: var(--navy); outline: none;
+            transition: border-color .2s;
+        }
+        .search input::placeholder { color: var(--navy); opacity: 1; }
+        .search input:focus { border-color: var(--blue); }
+        .search svg { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+
+        .tabs {
+            display: flex; justify-content: space-between; margin: 36px 0 44px;
+            overflow-x: auto; scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab {
+            flex: 0 0 auto; background: none; border: 0; cursor: pointer;
+            font: 400 19px var(--body); color: var(--navy);
+            text-transform: uppercase; padding: 8px 20px 14px;
+            border-bottom: 2px solid transparent; transition: border-color .2s, color .2s;
+        }
+        .tab:first-child { padding-left: 106px; padding-right: 60px; }
+        .tab:hover { color: var(--blue); }
+        .tab.active { border-bottom-color: var(--cyan); }
+
+        .finder-body {
+            display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+            gap: 40px; align-items: start; padding-left: 22px;
+        }
+
+        /* list */
+        .list {
+            max-height: 700px; overflow-y: auto; padding-right: 10px;
+            scrollbar-width: thin; scrollbar-color: var(--navy) transparent;
+        }
+        .agency {
+            display: grid; grid-template-columns: 1fr 1.15fr; gap: 22px 20px;
+            padding: 44px 8px 18px; border-bottom: 4px solid var(--black);
+            cursor: pointer; transition: background .2s;
+        }
+        .agency:hover { background: rgba(7,26,58,.04); }
+        .agency.active { border-bottom-color: var(--blue); background: rgba(15,65,153,.06); }
+        .agency h3 {
+            font-family: var(--heading); font-weight: 600; font-size: 22px; color: var(--navy);
+            grid-column: 1; grid-row: 1; align-self: center;
+        }
+        .agency .row {
+            display: flex; align-items: center; gap: 14px; font-size: 17px; color: var(--navy);
+            min-width: 0;
+        }
+        .agency .row span, .agency .row a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .agency .row a:hover { color: var(--blue); text-decoration: underline; }
+        .agency .row svg { flex: 0 0 34px; }
+        .agency .loc svg { flex-basis: 24px; }
+        .agency .loc { grid-column: 1; grid-row: 2; }
+        .agency .mail { grid-column: 2; grid-row: 1; }
+        .agency .tel { grid-column: 2; grid-row: 2; }
+        .empty { padding: 40px 8px; font-size: 17px; }
+
+        /* map */
+        .map-wrap { position: sticky; top: 24px; }
+        #map { width: 100%; aspect-ratio: 2 / 3; max-height: 700px; background: var(--white); }
+        .leaflet-container { font-family: var(--body); }
+        /* remap the dark-grey basemap to line art: roads -> near black, land -> Studio White, water -> soft grey */
+        .leaflet-tile-pane { filter: url(#lineart); }
+        .pin {
+            width: 18px; height: 18px; border-radius: 50%; background: var(--blue);
+            border: 3px solid var(--white); box-shadow: 0 1px 4px rgba(9,9,12,.5);
+            transition: transform .2s, background .2s;
+        }
+        .pin.active { transform: scale(1.45); background: var(--cyan); border-color: var(--navy); }
+        .leaflet-popup-content { margin: 12px 16px; font-size: 13px; line-height: 1.55; color: var(--navy); }
+        .leaflet-popup-content strong { font-family: var(--heading); font-weight: 600; font-size: 15px; }
+        .leaflet-popup-content a { color: var(--blue); }
+        .leaflet-popup-content .code { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }
+
+        /* ---------- CTA: one photo, with the CTA strip laid across its middle ---------- */
+        .band-img {
+            height: 160px;
+            background: var(--black) url('../img/02_twilight_luxury_lounge.webp') no-repeat;
+            background-size: 100% auto;
+        }
+        .band-top { background-position: center 12%; }
+        .band-bottom { background-position: center 78%; }
+        .cta-wrap { background: var(--white); }
+        .cta {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 40px; flex-wrap: wrap;
+            max-width: 1180px; margin: 0 auto; padding: 48px 40px 44px 60px;
+        }
+        .cta-left { text-align: center; }
+        .cta-left h4 {
+            font-family: var(--heading); font-weight: 700; font-size: 22px; color: var(--black);
+            text-transform: uppercase; margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 14px;
+            background: var(--navy); color: var(--white); border-radius: 999px;
+            padding: 20px 40px; font: 400 19px var(--body);
+            transition: background .2s;
+        }
+        .btn:hover { background: var(--blue); }
+        .btn svg { transition: transform .2s; }
+        .btn:hover svg { transform: translateX(4px); }
+        .cta-right {
+            font-family: var(--title); color: var(--navy); text-transform: uppercase;
+            font-size: clamp(30px, 4.3vw, 58px); line-height: 1.02; text-align: right;
+            letter-spacing: -.02em;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1100px) {
+            .tab:first-child { padding-left: 20px; padding-right: 20px; }
+            .tab { font-size: 16px; }
+            .agency .row { font-size: 16px; }
+            .agency h3 { font-size: 21px; }
+            .band-img { background-size: cover; }
+        }
+        @media (max-width: 900px) {
+            .finder { padding: 56px 16px 64px; }
+            .finder-head, .finder-body { padding-left: 0; }
+            .finder-head h2 { font-size: 24px; }
+            .search input { height: 50px; font-size: 15px; padding-left: 22px; }
+            .tabs { justify-content: flex-start; margin: 24px 0 28px; }
+            .tab { font-size: 14px; padding: 8px 14px 12px; }
+            .tab:first-child { padding-left: 14px; padding-right: 14px; }
+            .finder-body { grid-template-columns: 1fr; gap: 28px; }
+            .map-wrap { position: relative; top: 0; order: -1; }
+            #map { aspect-ratio: 4 / 3; }
+            .list { max-height: none; padding-right: 0; }
+            .agency { padding-top: 28px; gap: 14px 20px; border-bottom-width: 3px; }
+            .cta { padding: 40px 16px; flex-direction: column-reverse; align-items: flex-start; }
+            .cta-left { text-align: left; }
+            .cta-right { text-align: left; }
+            .btn { padding: 16px 30px; font-size: 16px; }
+            .rep-hero { padding: 72px 16px 64px; }
+        }
+        @media (max-width: 560px) {
+            .agency { grid-template-columns: 1fr; }
+            .agency h3, .agency .loc, .agency .mail, .agency .tel { grid-column: 1; grid-row: auto; }
+            .band-img { height: 120px; }
+            .search input { font-size: 13px; padding: 0 46px 0 18px; }
+            .search svg { right: 18px; }
+        }
+        /* site.css colours all headings navy; this page sets its own */
+        .rep-hero h1, .finder-head h2, .cta-left h4, .agency h3 { color: inherit; }
+    </style>
+    <script src="../assets/js/site.js" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="lineart" color-interpolation-filters="sRGB">
+        <feColorMatrix type="saturate" values="0"/>
+        <feComponentTransfer>
+            <feFuncR type="table" tableValues="0.86 0.86 0.86 0.86 0.86 0.88 0.91 0.93 0.945 0.945 0.945 0.22 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07"/>
+            <feFuncG type="table" tableValues="0.86 0.86 0.86 0.86 0.86 0.88 0.91 0.93 0.945 0.945 0.945 0.22 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07"/>
+            <feFuncB type="table" tableValues="0.86 0.86 0.86 0.86 0.86 0.88 0.91 0.93 0.945 0.945 0.945 0.22 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07"/>
+        </feComponentTransfer>
+    </filter>
+</svg>
+
+<div data-include="header"></div><div class="site-shell-content">
+<section class="rep-hero">
+    <h1>Find a LumosCielo<br>Representative</h1>
+    <p>Get product guidance, specification support, and coordinated delivery from local experts who understand your vision.</p>
+</section>
+
+<section class="finder">
+    <div class="finder-head">
+        <h2>A National Network</h2>
+        <label class="search">
+            <input id="search" type="search" placeholder="Search by State, City or Representative Firm" aria-label="Search representatives">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#09090C" stroke-width="3" stroke-linecap="round"><circle cx="14" cy="10" r="7"/><path d="M9 15l-6 6"/></svg>
+        </label>
+    </div>
+
+    <nav class="tabs" id="tabs" aria-label="Filter by region">
+        <button class="tab active" data-region="all">All</button>
+        <button class="tab" data-region="northwest">Northwest</button>
+        <button class="tab" data-region="southwest">Southwest</button>
+        <button class="tab" data-region="midwest">Midwest</button>
+        <button class="tab" data-region="west">West</button>
+        <button class="tab" data-region="canada">Canada</button>
+        <button class="tab" data-region="international">International</button>
+    </nav>
+
+    <div class="finder-body">
+        <div class="list" id="list" aria-live="polite" translate="no"></div>
+        <div class="map-wrap"><div id="map" aria-label="Representative map"></div></div>
+    </div>
+</section>
+
+<div class="band-img band-top" role="img" aria-label="Backlit LumosCielo ceiling in a twilight lounge"></div>
+<div class="cta-wrap"><section class="cta">
+    <div class="cta-left">
+        <h4>Can't find the right contact?</h4>
+        <a class="btn" href="../contact/">Contact BAGANTI
+            <svg width="34" height="14" viewBox="0 0 22 12" fill="none" stroke="#F1F1F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h19M15 1l5 5-5 5"/></svg>
+        </a>
+    </div>
+    <div class="cta-right">Make the<br>vision visible.</div>
+</section></div>
+<div class="band-img band-bottom" role="img" aria-label="Lounge seating beneath a LumosCielo ceiling"></div>
+</div><div data-include="footer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* Representative data — replace the sample entries below with the real agencies.
+   region: northwest | southwest | midwest | west | canada | international */
+const REPS = [
+    { name: 'Cascade Lighting Agency',     city: 'Seattle',      state: 'WA', region: 'northwest',     email: 'info@cascadelighting.com',   phone: '(206) 555-0142', lat: 47.6062, lng: -122.3321 },
+    { name: 'Rose City Lighting Group',    city: 'Portland',     state: 'OR', region: 'northwest',     email: 'sales@rosecitylg.com',       phone: '(503) 555-0187', lat: 45.5152, lng: -122.6784 },
+    { name: 'Desert Light Associates',     city: 'Phoenix',      state: 'AZ', region: 'southwest',     email: 'hello@desertlight.com',      phone: '(602) 555-0133', lat: 33.4484, lng: -112.0740 },
+    { name: 'Lone Star Illumination',      city: 'Dallas',       state: 'TX', region: 'southwest',     email: 'quotes@lonestarillum.com',   phone: '(214) 555-0164', lat: 32.7767, lng: -96.7970 },
+    { name: 'Lakeshore Lighting Reps',     city: 'Chicago',      state: 'IL', region: 'midwest',       email: 'info@lakeshorereps.com',     phone: '(312) 555-0119', lat: 41.8781, lng: -87.6298 },
+    { name: 'Twin Cities Lighting Co.',    city: 'Minneapolis',  state: 'MN', region: 'midwest',       email: 'team@tclighting.com',        phone: '(612) 555-0171', lat: 44.9778, lng: -93.2650 },
+    { name: 'Pacific Light Partners',      city: 'Los Angeles',  state: 'CA', region: 'west',          email: 'spec@pacificlight.com',      phone: '(213) 555-0128', lat: 34.0522, lng: -118.2437 },
+    { name: 'Bay Area Lighting Solutions', city: 'San Francisco',state: 'CA', region: 'west',          email: 'info@bayarealighting.com',   phone: '(415) 555-0156', lat: 37.7749, lng: -122.4194 },
+    { name: 'BAGANTI Montréal',            city: 'Montréal',     state: 'QC', region: 'canada',        email: 'info@baganti.com',           phone: '(514) 555-0100', lat: 45.5017, lng: -73.5673 },
+    { name: 'Northern Light Agency',       city: 'Toronto',      state: 'ON', region: 'canada',        email: 'sales@northernlight.ca',     phone: '(416) 555-0145', lat: 43.6532, lng: -79.3832 },
+    { name: 'West Coast Lighting Canada',  city: 'Vancouver',    state: 'BC', region: 'canada',        email: 'hello@wclighting.ca',        phone: '(604) 555-0192', lat: 49.2827, lng: -123.1207 },
+    { name: 'Lumière International',       city: 'London',       state: 'UK', region: 'international', email: 'contact@lumiereintl.co.uk',  phone: '+44 20 5550 0110', lat: 51.5074, lng: -0.1278 },
+    { name: 'Gulf Lighting Consultants',   city: 'Dubai',        state: 'UAE', region: 'international', email: 'info@gulflighting.ae',      phone: '+971 4 555 0123', lat: 25.2048, lng: 55.2708 }
+];
+
+const ICONS = {
+    mail:  '<svg width="34" height="24" viewBox="0 0 22 16" fill="none" stroke="#0F4199" stroke-width="1"><rect x="1" y="1" width="20" height="14" rx="1"/><path d="M1 1l10 8 10-8M1 15l7-6M21 15l-7-6"/></svg>',
+    pin:   '<svg width="22" height="28" viewBox="0 0 24 30" fill="#0F4199"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.5 12 30 12 30s12-9.5 12-18.3C24 5.2 18.6 0 12 0zm0 16.5a5 5 0 110-10 5 5 0 010 10z"/></svg>',
+    phone: '<svg width="30" height="30" viewBox="0 0 24 24" fill="#0F4199"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z"/></svg>'
+};
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+
+const map = L.map('map', { zoomControl: true, scrollWheelZoom: false, attributionControl: true })
+    .setView([42, -95], 3);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16,
+    attribution: 'Tiles &copy; Esri'
+}).addTo(map);
+
+const markers = REPS.map((r, i) => {
+    const m = L.marker([r.lat, r.lng], { icon: L.divIcon({ className: '', html: '<div class="pin"></div>', iconSize: [16, 16] }) })
+        .bindPopup(`<span class="code">${esc(r.region)} / ${esc(r.state)}</span><br><strong>${esc(r.name)}</strong><br>${esc(r.city)}, ${esc(r.state)}<br><a href="mailto:${esc(r.email)}">${esc(r.email)}</a><br>${esc(r.phone)}`);
+    m.on('click', () => select(i, false));
+    return m;
+});
+const layer = L.featureGroup().addTo(map);
+
+let region = 'all', query = '', activeIdx = -1;
+const listEl = document.getElementById('list');
+
+function visible() {
+    const q = query.trim().toLowerCase();
+    return REPS.map((r, i) => i).filter(i => {
+        const r = REPS[i];
+        if (region !== 'all' && r.region !== region) return false;
+        if (!q) return true;
+        return [r.name, r.city, r.state, r.region].join(' ').toLowerCase().includes(q);
+    });
+}
+
+function render() {
+    const ids = visible();
+    layer.clearLayers();
+    ids.forEach(i => layer.addLayer(markers[i]));
+
+    listEl.innerHTML = ids.length ? ids.map(i => {
+        const r = REPS[i];
+        return `<article class="agency${i === activeIdx ? ' active' : ''}" data-i="${i}">
+            <h3>${esc(r.name)}</h3>
+            <div class="row loc">${ICONS.pin}<span>${esc(r.city)}, ${esc(r.state)}</span></div>
+            <div class="row mail">${ICONS.mail}<a href="mailto:${esc(r.email)}">${esc(r.email)}</a></div>
+            <div class="row tel">${ICONS.phone}<a href="tel:${esc(r.phone.replace(/[^\d+]/g, ''))}">${esc(r.phone)}</a></div>
+        </article>`;
+    }).join('') : '<p class="empty">No representatives match your search. Try another city or state, or contact BAGANTI directly below.</p>';
+
+    if (ids.length) map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 9 });
+}
+
+function select(i, fly = true) {
+    activeIdx = i;
+    document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
+    markers[i].getElement()?.querySelector('.pin')?.classList.add('active');
+    document.querySelectorAll('.agency').forEach(a => a.classList.toggle('active', +a.dataset.i === i));
+    if (fly) {
+        // open the popup after the fly ends — its auto-pan would otherwise cancel the zoom
+        map.closePopup();
+        map.once('moveend', () => markers[i].openPopup());
+        map.flyTo(markers[i].getLatLng(), 13, { duration: .8 });
+    }
+    else document.querySelector(`.agency[data-i="${i}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+listEl.addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    const card = e.target.closest('.agency');
+    if (card) select(+card.dataset.i);
+});
+
+document.getElementById('tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.tab');
+    if (!btn) return;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === btn));
+    region = btn.dataset.region;
+    activeIdx = -1;
+    render();
+});
+
+document.getElementById('search').addEventListener('input', e => { query = e.target.value; activeIdx = -1; render(); });
+
+render();
+</script>
+</body>
+</html>
