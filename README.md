@@ -1,1 +1,0 @@
-# Baganti_demo
