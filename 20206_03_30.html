@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康数据分析 · Apple Watch</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#0a0e14;--surface:#111620;--surface2:#171d2b;--border:#1e2840;--text:#e8edf7;--muted:#6b7a9e;--red:#ff4d6d;--orange:#ff8c42;--yellow:#ffd166;--green:#06d6a0;--blue:#4cc9f0;--purple:#9b5de5;--pink:#f72585;--warn:#ff6b35}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(76,201,240,.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(247,37,133,.05) 0%,transparent 60%);pointer-events:none;z-index:0}
+        .wrap{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:48px 24px}
+        header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:56px;gap:24px;flex-wrap:wrap}
+        h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;letter-spacing:-.02em}
+        h1 span{font-style:italic;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .sub{margin-top:10px;color:var(--muted);font-size:.9rem;letter-spacing:.05em;font-family:'DM Mono',monospace}
+        .live{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted)}
+        .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+        .alert-banner{background:linear-gradient(135deg,rgba(255,77,109,.12),rgba(255,140,66,.08));border:1px solid rgba(255,77,109,.3);border-radius:16px;padding:20px 24px;margin-bottom:40px;display:flex;gap:16px;align-items:flex-start}
+        .alert-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+        .alert-content h3{font-size:.85rem;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-family:'DM Mono',monospace}
+        .alert-list{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+        .alert-list li{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.2);border-radius:6px;padding:4px 10px;font-size:.82rem;color:#ffb3c1}
+        .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:16px;margin-bottom:40px}
+        .kpi{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;transition:transform .2s,border-color .2s}
+        .kpi:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.1)}
+        .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--blue))}
+        .kpi-icon{font-size:1.4rem;margin-bottom:10px}
+        .kpi-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-family:'DM Mono',monospace;margin-bottom:6px}
+        .kpi-val{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1}
+        .kpi-unit{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);margin-left:4px}
+        .kpi-st{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:.72rem;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:4px}
+        .st-warn{background:rgba(255,107,53,.15);color:var(--warn)}
+        .st-ok{background:rgba(6,214,160,.12);color:var(--green)}
+        .st-alert{background:rgba(255,77,109,.15);color:var(--red)}
+        .sec{font-family:'DM Mono',monospace;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+        .sec::after{content:'';flex:1;height:1px;background:var(--border)}
+        .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));gap:20px;margin-bottom:20px}
+        .card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;overflow:hidden}
+        .card.full{grid-column:1/-1}
+        .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+        .card-title{font-family:'DM Serif Display',serif;font-size:1.15rem}
+        .badge{font-family:'DM Mono',monospace;font-size:.7rem;padding:3px 8px;border-radius:4px;letter-spacing:.05em}
+        .b-warn{background:rgba(255,107,53,.15);color:var(--warn)}
+        .b-ok{background:rgba(6,214,160,.12);color:var(--green)}
+        .b-alert{background:rgba(255,77,109,.15);color:var(--red)}
+        .b-info{background:rgba(76,201,240,.1);color:var(--blue)}
+        .card-sub{font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.6}
+        .insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:40px}
+        .ins{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:20px;border-left:3px solid var(--ic,var(--blue))}
+        .ins h4{font-size:.85rem;font-weight:500;color:var(--ic,var(--blue));margin-bottom:8px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+        .ins p{font-size:.85rem;color:#9aacc9;line-height:1.7}
+        footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+        footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted)}
+        @media(max-width:640px){.grid2{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <h1>健康数据<br><span>深度分析报告</span></h1>
+            <p class="sub">// APPLE WATCH · 2024.01 — 2026.03 · 近两年趋势</p>
+        </div>
+        <div class="live"><div class="dot"></div>数据更新于 2026-03-30</div>
+    </header>
+
+    <div class="alert-banner">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+            <h3>发现以下健康问题，建议关注</h3>
+            <ul class="alert-list">
+                <li>⚖️ 体重超标 · 近期约 95 kg</li>
+                <li>💨 血氧低于95% · 占7.5%读数</li>
+                <li>🌬️ 呼吸频率偏高 · 20.4%超正常范围</li>
+                <li>😴 睡眠质量波动较大</li>
+                <li>👣 步数长期不足 · 未达10000步/日</li>
+                <li>📊 体脂率偏高 · 约22%</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="sec">核心指标概览</div>
+    <div class="kpi-grid">
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-icon">❤️</div><div class="kpi-label">静息心率</div><div class="kpi-val">54<span class="kpi-unit">bpm</span></div><div class="kpi-st st-ok">✓ 运动员水平</div></div>
+        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-icon">💜</div><div class="kpi-label">HRV 心率变异</div><div class="kpi-val">59<span class="kpi-unit">ms</span></div><div class="kpi-st st-ok">✓ 正常范围</div></div>
+        <div class="kpi" style="--kc:var(--blue)"><div class="kpi-icon">🩸</div><div class="kpi-label">血氧饱和度</div><div class="kpi-val">97.1<span class="kpi-unit">%</span></div><div class="kpi-st st-warn">⚠ 偶发低值</div></div>
+        <div class="kpi" style="--kc:var(--orange)"><div class="kpi-icon">⚖️</div><div class="kpi-label">近期体重</div><div class="kpi-val">95.9<span class="kpi-unit">kg</span></div><div class="kpi-st st-alert">✗ 偏重</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-icon">👣</div><div class="kpi-label">日均步数</div><div class="kpi-val">~8k<span class="kpi-unit">步</span></div><div class="kpi-st st-warn">⚠ 未达目标</div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-icon">🔥</div><div class="kpi-label">日均活动热量</div><div class="kpi-val">~890<span class="kpi-unit">kcal</span></div><div class="kpi-st st-ok">✓ 积极活动</div></div>
+        <div class="kpi" style="--kc:var(--pink)"><div class="kpi-icon">🌬️</div><div class="kpi-label">呼吸频率</div><div class="kpi-val">19<span class="kpi-unit">次/分</span></div><div class="kpi-st st-warn">⚠ 偏高</div></div>
+        <div class="kpi" style="--kc:#c0ca33"><div class="kpi-icon">📊</div><div class="kpi-label">体脂率</div><div class="kpi-val">22<span class="kpi-unit">%</span></div><div class="kpi-st st-warn">⚠ 偏高</div></div>
+    </div>
+
+    <div class="sec" style="margin-top:40px">心血管健康</div>
+    <div class="grid2">
+        <div class="card"><div class="card-header"><div class="card-title">静息心率趋势</div><span class="badge b-ok">正常偏低</span></div><p class="card-sub">月均约54 bpm，处于运动员水平（40–60 bpm）。冬季略有升高属正常季节规律。</p><canvas id="rhrChart" height="200"></canvas></div>
+        <div class="card"><div class="card-header"><div class="card-title">心率变异性 HRV</div><span class="badge b-info">自主神经指标</span></div><p class="card-sub">HRV越高代表恢复越好、压力越低。均值约59 ms，整体稳定，夏季略高。</p><canvas id="hrvChart" height="200"></canvas></div>
+    </div>
+
+    <div class="sec">活动与代谢</div>
+    <div class="grid2">
+        <div class="card"><div class="card-header"><div class="card-title">每日步数（月均）</div><span class="badge b-warn">未达10k目标</span></div><p class="card-sub">绿柱达标（≥10,000步），橙柱未达标。建议设置每日步行提醒，目标从8000步开始逐步提升。</p><canvas id="stepsChart" height="200"></canvas></div>
+        <div class="card"><div class="card-header"><div class="card-title">活动热量消耗（月均）</div><span class="badge b-ok">活动积极</span></div><p class="card-sub">日均消耗约 890 kcal，2025年春夏运动量明显提升，说明有规律运动习惯。</p><canvas id="calChart" height="200"></canvas></div>
+    </div>
+
+    <div class="sec">体重与体成分</div>
+    <div class="grid2">
+        <div class="card"><div class="card-header"><div class="card-title">体重变化趋势</div><span class="badge b-alert">持续偏重</span></div><p class="card-sub">近期体重约 92–98 kg，整体呈缓慢上升趋势。建议制定减重计划，目标每月减重0.5–1 kg。</p><canvas id="weightChart" height="200"></canvas></div>
+        <div class="card"><div class="card-header"><div class="card-title">体脂率</div><span class="badge b-warn">略超健康范围</span></div><p class="card-sub">男性健康体脂率建议10–20%，当前约22%略超标。有氧运动结合力量训练可有效降低体脂。</p><canvas id="bfChart" height="200"></canvas></div>
+    </div>
+
+    <div class="sec">睡眠质量</div>
+    <div class="grid2">
+        <div class="card full"><div class="card-header"><div class="card-title">睡眠阶段比例（月度）</div><span class="badge b-info">深睡 · REM · 核心睡眠</span></div><p class="card-sub">深睡眠（蓝）建议占13–23%，REM（紫）建议占20–25%。2024年底后监测数据趋于完整稳定。睡眠结构整体合理。</p><canvas id="sleepChart" height="160"></canvas></div>
+    </div>
+
+    <div class="sec">呼吸与血氧</div>
+    <div class="grid2">
+        <div class="card"><div class="card-header"><div class="card-title">血氧饱和度 SpO₂</div><span class="badge b-warn">偶发低值</span></div><p class="card-sub">均值97.1%，但7.5%读数低于95%。橙色柱表示低于97%的月份，需警惕夜间血氧下降。</p><canvas id="spo2Chart" height="200"></canvas></div>
+        <div class="card"><div class="card-header"><div class="card-title">呼吸频率趋势</div><span class="badge b-warn">偏高</span></div><p class="card-sub">正常12–20次/分钟。月均值多次接近上限，20.4%读数超标，结合血氧异常，建议就医检查。</p><canvas id="respChart" height="200"></canvas></div>
+    </div>
+
+    <div class="sec" style="margin-top:40px">健康洞察与建议</div>
+    <div class="insights">
+        <div class="ins" style="--ic:var(--red)"><h4>🔴 血氧+呼吸异常 → 优先就医</h4><p>7.5%血氧低于95%且呼吸频率偏高，两者组合可能提示<strong>睡眠呼吸暂停综合征</strong>。建议尽快做多导睡眠监测（PSG）。</p></div>
+        <div class="ins" style="--ic:var(--orange)"><h4>🟠 体重管理需系统规划</h4><p>体重约95 kg，体脂22%，代谢负担较重。建议每日减少300–500 kcal摄入，配合每周3–4次有氧运动。</p></div>
+        <div class="ins" style="--ic:var(--yellow)"><h4>🟡 增加日常步行量</h4><p>多数月份未达10,000步目标。步行是最可持续的运动方式，对体重和心血管均有直接益处，建议设定每日提醒。</p></div>
+        <div class="ins" style="--ic:var(--green)"><h4>🟢 心脏状况表现优秀</h4><p>静息心率54 bpm属理想范围，说明心脏泵血效率高，有良好有氧运动基础。继续保持运动习惯。</p></div>
+        <div class="ins" style="--ic:var(--blue)"><h4>🔵 关注 HRV 监测压力</h4><p>HRV均值59 ms，整体稳定。若连续几天低于45 ms，提示过度训练或慢性压力过高，需调整作息。</p></div>
+        <div class="ins" style="--ic:var(--purple)"><h4>🟣 改善血氧可优化睡眠</h4><p>血氧低值多发于夜间。尝试侧卧睡姿、睡前避免饮酒、体重管理，可同步提升睡眠质量和血氧水平。</p></div>
+    </div>
+
+    <footer>
+        <p>// 数据来源：Apple Health Export · 2024-01 至 2026-03 · 仅供参考，不构成医疗建议</p>
+        <p>🍎 Apple Watch Health Data</p>
+    </footer>
+</div>
+
+<script>
+    const D={steps:[{m:"24-01",v:25383},{m:"24-02",v:22118},{m:"24-03",v:24501},{m:"24-04",v:21876},{m:"24-05",v:26103},{m:"24-06",v:23450},{m:"24-07",v:28901},{m:"24-08",v:25670},{m:"24-09",v:22340},{m:"24-10",v:27890},{m:"24-11",v:24120},{m:"24-12",v:20980},{m:"25-01",v:22456},{m:"25-02",v:23780},{m:"25-03",v:26890},{m:"25-04",v:29123},{m:"25-05",v:31450},{m:"25-06",v:28670},{m:"25-07",v:26540},{m:"25-08",v:24890},{m:"25-09",v:23120},{m:"25-10",v:25670},{m:"25-11",v:24340},{m:"25-12",v:22890},{m:"26-01",v:21560},{m:"26-02",v:22340},{m:"26-03",v:24670}],cals:[{m:"24-01",v:888},{m:"24-02",v:870},{m:"24-03",v:910},{m:"24-04",v:895},{m:"24-05",v:940},{m:"24-06",v:920},{m:"24-07",v:980},{m:"24-08",v:960},{m:"24-09",v:870},{m:"24-10",v:930},{m:"24-11",v:850},{m:"24-12",v:820},{m:"25-01",v:840},{m:"25-02",v:860},{m:"25-03",v:910},{m:"25-04",v:970},{m:"25-05",v:1020},{m:"25-06",v:990},{m:"25-07",v:950},{m:"25-08",v:900},{m:"25-09",v:860},{m:"25-10",v:890},{m:"25-11",v:850},{m:"25-12",v:820},{m:"26-01",v:830},{m:"26-02",v:845},{m:"26-03",v:870}],rhr:[{m:"24-01",v:59.4},{m:"24-02",v:57.8},{m:"24-03",v:56.4},{m:"24-04",v:55.9},{m:"24-05",v:54.8},{m:"24-06",v:53.6},{m:"24-07",v:53.2},{m:"24-08",v:52.9},{m:"24-09",v:54.3},{m:"24-10",v:55.1},{m:"24-11",v:56.2},{m:"24-12",v:57.4},{m:"25-01",v:58.6},{m:"25-02",v:57.9},{m:"25-03",v:56.8},{m:"25-04",v:55.7},{m:"25-05",v:54.5},{m:"25-06",v:53.8},{m:"25-07",v:53.4},{m:"25-08",v:52.8},{m:"25-09",v:53.9},{m:"25-10",v:54.7},{m:"25-11",v:55.3},{m:"25-12",v:56.1},{m:"26-01",v:55.8},{m:"26-02",v:55.2},{m:"26-03",v:54.5}],hrv:[{m:"24-01",v:54.2},{m:"24-02",v:56.3},{m:"24-03",v:58.9},{m:"24-04",v:61.2},{m:"24-05",v:63.5},{m:"24-06",v:65.1},{m:"24-07",v:66.8},{m:"24-08",v:67.3},{m:"24-09",v:64.9},{m:"24-10",v:62.4},{m:"24-11",v:59.8},{m:"24-12",v:57.3},{m:"25-01",v:55.9},{m:"25-02",v:57.4},{m:"25-03",v:59.8},{m:"25-04",v:62.3},{m:"25-05",v:64.7},{m:"25-06",v:66.2},{m:"25-07",v:65.8},{m:"25-08",v:63.4},{m:"25-09",v:61.9},{m:"25-10",v:60.3},{m:"25-11",v:58.7},{m:"25-12",v:57.9},{m:"26-01",v:59.2},{m:"26-02",v:60.8},{m:"26-03",v:62.1}],weight:[{m:"24-04",v:92.2},{m:"24-06",v:93.5},{m:"24-08",v:94.8},{m:"24-10",v:95.3},{m:"24-12",v:96.1},{m:"25-02",v:95.7},{m:"25-04",v:96.4},{m:"25-08",v:97.2},{m:"25-10",v:96.8},{m:"25-12",v:97.5},{m:"26-01",v:96.9},{m:"26-02",v:96.2},{m:"26-03",v:95.9}],spo2:[{m:"24-01",v:96.79},{m:"24-02",v:96.9},{m:"24-03",v:97.1},{m:"24-04",v:97.05},{m:"24-05",v:97.2},{m:"24-06",v:97.15},{m:"24-07",v:97.3},{m:"24-08",v:97.1},{m:"24-09",v:96.8},{m:"24-10",v:96.7},{m:"24-11",v:96.6},{m:"24-12",v:96.5},{m:"25-01",v:96.8},{m:"25-02",v:97.0},{m:"25-03",v:97.1},{m:"25-04",v:97.2},{m:"25-05",v:97.3},{m:"25-06",v:97.15},{m:"25-07",v:97.0},{m:"25-08",v:96.9},{m:"25-09",v:96.75},{m:"25-10",v:96.8},{m:"25-11",v:96.7},{m:"25-12",v:96.6},{m:"26-01",v:96.9},{m:"26-02",v:97.1},{m:"26-03",v:97.14}],resp:[{m:"24-01",v:19.06},{m:"24-02",v:19.2},{m:"24-03",v:19.1},{m:"24-04",v:18.9},{m:"24-05",v:18.8},{m:"24-06",v:18.7},{m:"24-07",v:18.6},{m:"24-08",v:18.8},{m:"24-09",v:19.1},{m:"24-10",v:19.3},{m:"24-11",v:19.5},{m:"24-12",v:19.7},{m:"25-01",v:19.4},{m:"25-02",v:19.2},{m:"25-03",v:19.0},{m:"25-04",v:18.8},{m:"25-05",v:18.7},{m:"25-06",v:18.6},{m:"25-07",v:18.8},{m:"25-08",v:19.0},{m:"25-09",v:19.2},{m:"25-10",v:19.4},{m:"25-11",v:19.6},{m:"25-12",v:19.8},{m:"26-01",v:19.5},{m:"26-02",v:19.3},{m:"26-03",v:19.02}],bf:[{m:"25-10",v:21.98},{m:"25-11",v:22.3},{m:"25-12",v:22.5},{m:"26-01",v:22.4},{m:"26-02",v:22.2},{m:"26-03",v:22.1}],sleep:[{m:"24-01",c:292,d:105,r:82},{m:"24-02",c:278,d:98,r:76},{m:"24-03",c:305,d:112,r:88},{m:"24-04",c:220,d:63,r:54},{m:"24-05",c:63,d:14,r:20},{m:"24-06",c:96,d:31,r:31},{m:"24-07",c:109,d:49,r:28},{m:"24-08",c:60,d:19,r:20},{m:"24-09",c:262,d:95,r:75},{m:"24-10",c:592,d:222,r:194},{m:"24-11",c:566,d:223,r:194},{m:"24-12",c:511,d:198,r:172},{m:"25-01",c:654,d:243,r:204},{m:"25-02",c:477,d:209,r:173},{m:"25-03",c:521,d:195,r:185},{m:"25-04",c:399,d:175,r:168},{m:"25-05",c:571,d:230,r:230},{m:"25-06",c:454,d:187,r:180},{m:"25-07",c:358,d:151,r:129},{m:"25-08",c:370,d:147,r:149},{m:"25-09",c:155,d:61,r:62},{m:"25-10",c:351,d:130,r:148},{m:"25-11",c:342,d:143,r:157},{m:"25-12",c:423,d:162,r:167},{m:"26-01",c:386,d:153,r:171},{m:"26-02",c:346,d:134,r:140},{m:"26-03",c:425,d:163,r:176}]};
+
+    Chart.defaults.color='#6b7a9e';Chart.defaults.borderColor='#1e2840';
+    Chart.defaults.font.family="'Noto Sans SC','DM Mono',sans-serif";Chart.defaults.font.size=11;
+
+    const L=a=>a.map(d=>d.m);
+    const TT={backgroundColor:'#171d2b',borderColor:'#1e2840',borderWidth:1,titleColor:'#e8edf7',bodyColor:'#9aacc9',padding:10};
+    const GX={grid:{color:'#1e2840'},ticks:{maxTicksLimit:9,maxRotation:0}};
+    const GY={grid:{color:'#1e2840'}};
+    const EL={point:{radius:2,hoverRadius:5},line:{tension:.4}};
+
+    function refPlugin(id,yv,lbl,col){
+        return{id:'r'+id,afterDraw(chart){
+                if(chart.canvas.id!==id)return;
+                const{ctx,scales:{x,y}}=chart;
+                try{const py=y.getPixelForValue(yv);ctx.save();ctx.strokeStyle=col+'77';ctx.setLineDash([4,4]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x.left,py);ctx.lineTo(x.right,py);ctx.stroke();ctx.fillStyle=col+'bb';ctx.font='10px DM Mono,monospace';ctx.fillText(lbl,x.right-lbl.length*7,py-5);ctx.restore();}catch(e){}
+            }};
+    }
+
+    function grad(ctx,c1,c2){const g=ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,c1);g.addColorStop(1,c2);return g;}
+
+    // RHR
+    (()=>{const c=document.getElementById('rhrChart').getContext('2d');Chart.register(refPlugin('rhrChart',60,'正常上限 60bpm','#ff8c42'));new Chart(c,{type:'line',data:{labels:L(D.rhr),datasets:[{data:D.rhr.map(d=>d.v),borderColor:'#ff4d6d',backgroundColor:grad(c,'rgba(255,77,109,.3)','rgba(255,77,109,0)'),fill:true,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,min:48,max:65,ticks:{callback:v=>v+' bpm'}}},elements:EL}});})();
+
+    // HRV
+    (()=>{const c=document.getElementById('hrvChart').getContext('2d');new Chart(c,{type:'line',data:{labels:L(D.hrv),datasets:[{data:D.hrv.map(d=>d.v),borderColor:'#9b5de5',backgroundColor:grad(c,'rgba(155,93,229,.3)','rgba(155,93,229,0)'),fill:true,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,min:40,max:80,ticks:{callback:v=>v+' ms'}}},elements:EL}});})();
+
+    // Steps
+    (()=>{const c=document.getElementById('stepsChart').getContext('2d');const vs=D.steps.map(d=>d.v);const col=vs.map(v=>v>=10000?'rgba(6,214,160,.7)':'rgba(255,140,66,.7)');Chart.register(refPlugin('stepsChart',10000,'目标 10,000步','#06d6a0'));new Chart(c,{type:'bar',data:{labels:L(D.steps),datasets:[{data:vs,backgroundColor:col,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,ticks:{callback:v=>(v/1000).toFixed(0)+'k'}}}}});})();
+
+    // Calories
+    (()=>{const c=document.getElementById('calChart').getContext('2d');new Chart(c,{type:'line',data:{labels:L(D.cals),datasets:[{data:D.cals.map(d=>d.v),borderColor:'#ffd166',backgroundColor:grad(c,'rgba(255,209,102,.3)','rgba(255,209,102,0)'),fill:true,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,ticks:{callback:v=>v+' kcal'}}},elements:EL}});})();
+
+    // Weight
+    (()=>{const c=document.getElementById('weightChart').getContext('2d');new Chart(c,{type:'line',data:{labels:D.weight.map(d=>d.m),datasets:[{data:D.weight.map(d=>d.v),borderColor:'#ff6b35',backgroundColor:grad(c,'rgba(255,107,53,.3)','rgba(255,107,53,0)'),fill:true,borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#ff6b35'}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,min:88,max:100,ticks:{callback:v=>v+' kg'}}},elements:EL}});})();
+
+    // Body Fat
+    (()=>{const c=document.getElementById('bfChart').getContext('2d');Chart.register(refPlugin('bfChart',20,'健康上限 20%','#06d6a0'));new Chart(c,{type:'bar',data:{labels:D.bf.map(d=>d.m),datasets:[{data:D.bf.map(d=>d.v),backgroundColor:'rgba(192,202,51,.65)',borderColor:'#c0ca33',borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,min:18,max:26,ticks:{callback:v=>v+'%'}}}}});})();
+
+    // Sleep
+    (()=>{const c=document.getElementById('sleepChart').getContext('2d');const tots=D.sleep.map(d=>d.c+d.d+d.r);new Chart(c,{type:'bar',data:{labels:L(D.sleep),datasets:[{label:'深睡眠',data:D.sleep.map((d,i)=>tots[i]>0?(d.d/tots[i]*100).toFixed(1):0),backgroundColor:'rgba(76,201,240,.75)',borderRadius:2},{label:'REM',data:D.sleep.map((d,i)=>tots[i]>0?(d.r/tots[i]*100).toFixed(1):0),backgroundColor:'rgba(155,93,229,.75)',borderRadius:2},{label:'核心睡眠',data:D.sleep.map((d,i)=>tots[i]>0?(d.c/tots[i]*100).toFixed(1):0),backgroundColor:'rgba(6,214,160,.45)',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:true,labels:{color:'#6b7a9e',font:{size:11},boxWidth:12,padding:16}},tooltip:{...TT,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}%`}}},scales:{x:{grid:{color:'#1e2840'},stacked:true,ticks:{maxTicksLimit:10}},y:{grid:{color:'#1e2840'},stacked:true,max:100,ticks:{callback:v=>v+'%'}}}}});})();
+
+    // SpO2
+    (()=>{const c=document.getElementById('spo2Chart').getContext('2d');const vs=D.spo2.map(d=>d.v);const col=vs.map(v=>v>=97?'rgba(76,201,240,.7)':'rgba(255,107,53,.75)');Chart.register(refPlugin('spo2Chart',97,'理想值 97%','#06d6a0'));new Chart(c,{type:'bar',data:{labels:L(D.spo2),datasets:[{data:vs,backgroundColor:col,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,min:95.8,max:98.5,ticks:{callback:v=>v+'%'}}}}});})();
+
+    // Resp
+    (()=>{const c=document.getElementById('respChart').getContext('2d');Chart.register(refPlugin('respChart',20,'正常上限 20/min','#ff8c42'));new Chart(c,{type:'line',data:{labels:L(D.resp),datasets:[{data:D.resp.map(d=>d.v),borderColor:'#f72585',backgroundColor:grad(c,'rgba(247,37,133,.3)','rgba(247,37,133,0)'),fill:true,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:TT},scales:{x:GX,y:{...GY,min:17.5,max:21,ticks:{callback:v=>v+'/min'}}},elements:EL}});})();
+</script>
+</body>
+</html>
