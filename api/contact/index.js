@@ -43,6 +43,12 @@ module.exports = async function (context, req) {
             html
         })
     });
-    if (!r.ok) { context.log.error('Resend error', r.status, await r.text()); return reply(502, { ok: false, error: 'send-failed' }); }
+    if (!r.ok) {
+        const detail = await r.text();
+        context.log.error('Resend error', r.status, detail);
+        let message = '';
+        try { message = JSON.parse(detail).message || ''; } catch (e) { /* not JSON */ }
+        return reply(502, { ok: false, error: 'send-failed', status: r.status, detail: message });
+    }
     return reply(200, { ok: true });
 };
