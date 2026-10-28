@@ -6,6 +6,10 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Analytics cookies stay off until the visitor accepts them in the cookie banner (site.js).
+  var consent = null; try { consent = JSON.parse(localStorage.getItem('baganti-consent')); } catch (e) {}
+  gtag('consent', 'default', { analytics_storage: consent && consent.analytics ? 'granted' : 'denied',
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
   gtag('js', new Date());
 
   gtag('config', 'G-WR41BZEE5X');

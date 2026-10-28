@@ -319,6 +319,53 @@
         }
     }
 
+    /* ---------- Cookie banner: analytics only after consent (Google consent mode, see the <head> tag) ---------- */
+    const consentStore = keep('baganti-consent');
+    const readConsent = () => { try { return JSON.parse(consentStore.get()); } catch (e) { return null; } };
+    const saveConsent = analytics => {
+        consentStore.set(JSON.stringify({ analytics, date: new Date().toISOString().slice(0, 10) }));
+        if (window.gtag) gtag('consent', 'update', { analytics_storage: analytics ? 'granted' : 'denied' });
+        if (!analytics) { // drop Google Analytics cookies set before the choice
+            const host = location.hostname.split('.').slice(-2).join('.');
+            document.cookie.split(';').map(c => c.split('=')[0].trim()).filter(n => /^_ga/.test(n)).forEach(n =>
+                [location.hostname, '.' + host, ''].forEach(d => { document.cookie = n + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : ''); }));
+        }
+    };
+    const banner = document.createElement('section');
+    banner.className = 'cookie-banner';
+    banner.setAttribute('aria-label', t('Cookie preferences'));
+    banner.hidden = true;
+    banner.innerHTML = `<div class="cookie-banner-copy"><strong>${t('Cookies on this site')}</strong>
+        <p>${t('We use necessary cookies to run the site and, with your permission, Google Analytics cookies to understand how it is used.')}
+        <a href="${ROOT}privacy/#cookies">${t('Privacy notice')}</a></p>
+        <div class="cookie-banner-options" hidden>
+        <label><input type="checkbox" checked disabled> <span><b>${t('Necessary')}</b> ${t('Always on. Remembers your language and keeps the site working.')}</span></label>
+        <label><input type="checkbox" data-consent-analytics> <span><b>${t('Analytics')}</b> ${t('Google Analytics: counts visits and pages viewed, without identifying you.')}</span></label></div></div>
+        <div class="cookie-banner-actions">
+        <button type="button" data-consent="settings">${t('Settings')}</button>
+        <button type="button" data-consent="save" hidden>${t('Save choices')}</button>
+        <button type="button" data-consent="reject">${t('Reject')}</button>
+        <button type="button" data-consent="accept" class="is-primary">${t('Accept all')}</button></div>`;
+    document.body.appendChild(banner);
+    const options = $('.cookie-banner-options', banner), analyticsBox = $('[data-consent-analytics]', banner);
+    const openBanner = withOptions => {
+        analyticsBox.checked = !!(readConsent() || {}).analytics;
+        options.hidden = !withOptions;
+        $('[data-consent="settings"]', banner).hidden = withOptions;
+        $('[data-consent="save"]', banner).hidden = !withOptions;
+        banner.hidden = false;
+    };
+    banner.addEventListener('click', e => {
+        const b = e.target.closest('[data-consent]');
+        if (!b) return;
+        const act = b.dataset.consent;
+        if (act === 'settings') return openBanner(true);
+        saveConsent(act === 'accept' || (act === 'save' && analyticsBox.checked));
+        banner.hidden = true;
+    });
+    $$('[data-cookie-settings]').forEach(b => b.addEventListener('click', () => openBanner(true)));
+    if (!readConsent()) openBanner(false);
+
     /* ---------- LumosCielo Custom: switch preview loop to the full video ---------- */
     $$('.custom-video-mode-button').forEach(btn => btn.addEventListener('click', () => {
         const video = btn.parentElement.querySelector('video');
