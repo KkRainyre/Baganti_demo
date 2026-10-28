@@ -182,7 +182,6 @@
 "Compare Standard + Custom": "比较 Standard 与 Custom",
 "Complete architectural luminous ceiling, wall and feature-surface systems in standard and custom configurations.": "完整的建筑发光天花、墙面及特色表面系统，提供标准与定制配置。",
 "Complete illuminated ceiling, wall and feature systems. Choose Standard for square, rectangular or round panels in predefined sizes, or Custom for a system developed around your project.": "完整的发光天花、墙面及特色造型系统。选择 Standard，可获得预设尺寸的方形、矩形或圆形面板；选择 Custom，则可围绕您的项目开发专属系统。",
-"Complete the form to prepare an email to Baganti. Add drawings or other attachments in your email app before sending.": "填写表单即可生成发送给 Baganti 的邮件草稿。发送前，请在您的邮件应用中添加图纸或其他附件。",
 "Complete the installation.": "完成安装。",
 "Computer-controlled cutting for textiles, films and flexible sheet materials.": "计算机控制切割纺织品、薄膜及柔性片材。",
 "Computer-controlled routing cuts and machines parts for custom and repeat production.": "计算机控制的雕铣设备为定制及批量生产切割和加工零件。",
@@ -643,7 +642,6 @@
 "Precision welding of a metal assembly": "金属组件的精密焊接",
 "Precision-cut removable perforated metal panels for durable architectural surfaces with service access.": "精密切割的可拆卸穿孔金属面板，打造经久耐用、便于检修的建筑表面。",
 "Predefined dimensions or custom sizes.": "预设尺寸或定制尺寸。",
-"Prepare Email": "生成邮件",
 "Prepare for installation.": "安装准备。",
 "Pricing / purchasing": "报价 / 采购",
 "Prints fabric graphics in-house for illuminated and non-lit displays.": "自主印刷织物画面，用于发光及非发光展示。",
@@ -891,7 +889,6 @@
 "The team reviews the design and technical requirements throughout development and production.": "在整个开发与生产过程中，团队持续审核设计与技术要求。",
 "The website may use essential technical data required to operate securely and understand general site performance. Baganti does not sell personal information.": "本网站可能会使用安全运行及了解网站整体性能所必需的技术数据。Baganti 不出售个人信息。",
 "These terms apply to your use of the Baganti website and its published resources.": "本条款适用于您对 Baganti 网站及其发布资源的使用。",
-"This form opens a draft in your email app. Review it and send it there; the form does not send an email or store your details on this site. If no app opens, email": "此表单会在您的邮件应用中打开一份草稿。请检查后从邮件应用中发送；本表单不会发送邮件，也不会在本网站存储您的信息。如未打开邮件应用，请发送邮件至",
 "This is an estimate, not a guaranteed delivery date. Complexity, quantity, materials, engineering and production scheduling affect lead time. Confirm the project schedule with our team before ordering.": "此为估算时间，并非保证交付日期。复杂程度、数量、材料、工程及生产排期均会影响交期。请在下单前与我们的团队确认项目进度。",
 "This notice may change when website practices or legal requirements change. The current notice is displayed on this page.": "当网站做法或法律要求发生变化时，本声明可能随之更新。本页面所示即为现行声明。",
 "This website provides general information about Baganti, its products, capabilities and work. You may use it for legitimate project research and communication.": "本网站提供有关 Baganti 及其产品、能力和项目的一般信息。您可将其用于正当的项目调研与沟通。",
@@ -1040,5 +1037,11 @@
 "— Red, green, blue and white light": "— 红、绿、蓝、白光",
 "— Review the application, drawings and requirements.": "— 审核应用场景、图纸与需求。",
 "— Static White": "— 静态白光",
-"← All Resources": "← 全部资源"
+"← All Resources": "← 全部资源",
+"Complete the form and Baganti will reply by email. To share drawings or other attachments, send them to info@baganti.com.": "填写表单后，Baganti 会通过邮件回复您。如需提供图纸或其他附件，请发送至 info@baganti.com。",
+"Send Message": "发送",
+"Your request is sent directly to Baganti. We use your details only to reply to it.": "您的请求将直接发送给 Baganti。我们只会用您的信息回复此请求。",
+"Sending…": "正在发送…",
+"Thank you. Your message has been sent and Baganti will reply by email.": "谢谢，您的消息已发送，Baganti 会通过邮件回复您。",
+"Your message could not be sent. Please try again or email": "消息发送失败。请重试，或发送邮件至"
 }

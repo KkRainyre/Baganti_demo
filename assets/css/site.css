@@ -50,3 +50,11 @@ html,body{overflow-x:clip}
 .master-product-media-hero .master-product-hero-copy h1{font-size:min(48px,11vw)}
 .page-hero h1{font-size:clamp(34px,12vw,60px)}
 }
+
+/* Contact form sent through /api/contact (Resend) */
+.final-project-form .form-hp{height:1px;left:-9999px;opacity:0;position:absolute;width:1px}
+.final-project-form button:disabled{cursor:wait;opacity:.6}
+.form-status{font-size:14px;line-height:1.55;margin-top:15px}
+.form-status.is-ok{color:var(--blue)}
+.form-status.is-error{color:#b3261e}
+.form-status a{text-decoration:underline}

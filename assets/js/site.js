@@ -262,9 +262,32 @@
         if (FAMILY[f]) fam.value = FAMILY[f];
         fillProducts();
         fam.addEventListener('change', fillProducts);
-        form.addEventListener('submit', e => {
+        const status = $('.form-status', form), send = $('button[type=submit]', form);
+        const show = (cls, text) => { status.hidden = false; status.className = 'form-status ' + cls; status.textContent = text; };
+        form.addEventListener('submit', async e => {
             e.preventDefault();
             const d = new FormData(form);
+            send.disabled = true;
+            show('', t('Sending…'));
+            try {
+                const r = await fetch(ROOT + 'api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(d)) });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                form.reset();
+                fillProducts();
+                show('is-ok', t('Thank you. Your message has been sent and Baganti will reply by email.'));
+            } catch (err) {
+                // Sending failed: offer the same request as a prefilled email instead.
+                console.error('Contact form', err);
+                show('is-error', t('Your message could not be sent. Please try again or email') + ' ');
+                const a = document.createElement('a');
+                a.href = mailto(d);
+                a.textContent = 'info@baganti.com';
+                status.append(a, LANG === 'zh' ? '。' : '.');
+            }
+            send.disabled = false;
+        });
+        function mailto(d) {
             const subject = (d.get('requestType') || 'Website inquiry') + ' — ' + (d.get('family') || 'Baganti');
             const bodyText = [
                 'Request type: ' + (d.get('requestType') || 'Project inquiry'),
@@ -277,8 +300,8 @@
                 '',
                 String(d.get('message') || '')
             ].join('\n');
-            location.href = 'mailto:info@baganti.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(bodyText);
-        });
+            return 'mailto:info@baganti.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(bodyText);
+        }
     }
 
     /* ---------- LumosCielo Custom: switch preview loop to the full video ---------- */

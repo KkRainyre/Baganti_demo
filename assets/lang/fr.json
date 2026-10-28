@@ -175,7 +175,6 @@
 "Compare Standard + Custom": "Comparer Standard + Custom",
 "Complete architectural luminous ceiling, wall and feature-surface systems in standard and custom configurations.": "Systèmes architecturaux complets de plafonds, murs et surfaces lumineuses, en configurations standard et sur mesure.",
 "Complete illuminated ceiling, wall and feature systems. Choose Standard for square, rectangular or round panels in predefined sizes, or Custom for a system developed around your project.": "Systèmes complets de plafonds, de murs et d’éléments lumineux. Choisissez Standard pour des panneaux carrés, rectangulaires ou ronds de dimensions prédéfinies, ou Custom pour un système développé en fonction de votre projet.",
-"Complete the form to prepare an email to Baganti. Add drawings or other attachments in your email app before sending.": "Remplissez le formulaire pour préparer un courriel à Baganti. Ajoutez des dessins ou d’autres pièces jointes dans votre application de courriel avant l’envoi.",
 "Complete the installation.": "Réaliser l’installation.",
 "Computer-controlled cutting for textiles, films and flexible sheet materials.": "Découpe à commande numérique des textiles, des films et des matériaux souples en feuille.",
 "Computer-controlled routing cuts and machines parts for custom and repeat production.": "Le défonçage à commande numérique coupe et usine les pièces pour la production sur mesure et en série.",
@@ -614,7 +613,6 @@
 "Precision welding of a metal assembly": "Soudage de précision d’un assemblage métallique",
 "Precision-cut removable perforated metal panels for durable architectural surfaces with service access.": "Panneaux en métal perforé amovibles, découpés avec précision, pour des surfaces architecturales durables avec accès pour l’entretien.",
 "Predefined dimensions or custom sizes.": "Dimensions prédéfinies ou sur mesure.",
-"Prepare Email": "Préparer le courriel",
 "Prepare for installation.": "Préparer l’installation.",
 "Pricing / purchasing": "Prix / achat",
 "Prints fabric graphics in-house for illuminated and non-lit displays.": "Imprime à l’interne les graphiques en tissu pour les présentoirs éclairés et non éclairés.",
@@ -859,7 +857,6 @@
 "The team reviews the design and technical requirements throughout development and production.": "L’équipe examine la conception et les exigences techniques tout au long du développement et de la production.",
 "The website may use essential technical data required to operate securely and understand general site performance. Baganti does not sell personal information.": "Le site Web peut utiliser les données techniques essentielles à son fonctionnement sécurisé et à la compréhension de son rendement général. Baganti ne vend pas de renseignements personnels.",
 "These terms apply to your use of the Baganti website and its published resources.": "Ces conditions s’appliquent à votre utilisation du site Web de Baganti et de ses ressources publiées.",
-"This form opens a draft in your email app. Review it and send it there; the form does not send an email or store your details on this site. If no app opens, email": "Ce formulaire ouvre un brouillon dans votre application de courriel. Relisez-le et envoyez-le depuis celle-ci; le formulaire n’envoie aucun courriel et ne conserve pas vos renseignements sur ce site. Si aucune application ne s’ouvre, écrivez à",
 "This is an estimate, not a guaranteed delivery date. Complexity, quantity, materials, engineering and production scheduling affect lead time. Confirm the project schedule with our team before ordering.": "Il s’agit d’une estimation et non d’une date de livraison garantie. La complexité, la quantité, les matériaux, l’ingénierie et la planification de la production influent sur le délai. Confirmez l’échéancier du projet avec notre équipe avant de commander.",
 "This notice may change when website practices or legal requirements change. The current notice is displayed on this page.": "Le présent avis peut être modifié lorsque les pratiques du site Web ou les exigences légales changent. L’avis en vigueur est affiché sur cette page.",
 "This website provides general information about Baganti, its products, capabilities and work. You may use it for legitimate project research and communication.": "Ce site Web fournit de l’information générale sur Baganti, ses produits, ses capacités et ses réalisations. Vous pouvez l’utiliser à des fins légitimes de recherche et de communication liées à des projets.",
@@ -1005,5 +1002,11 @@
 "— Red, green, blue and white light": "— Lumière rouge, verte, bleue et blanche",
 "— Review the application, drawings and requirements.": "— Examiner l’application, les dessins et les exigences.",
 "— Static White": "— Blanc fixe",
-"← All Resources": "← Toutes les ressources"
+"← All Resources": "← Toutes les ressources",
+"Complete the form and Baganti will reply by email. To share drawings or other attachments, send them to info@baganti.com.": "Remplissez le formulaire et Baganti vous répondra par courriel. Pour transmettre des dessins ou d’autres pièces jointes, envoyez-les à info@baganti.com.",
+"Send Message": "Envoyer le message",
+"Your request is sent directly to Baganti. We use your details only to reply to it.": "Votre demande est envoyée directement à Baganti. Nous utilisons vos renseignements uniquement pour y répondre.",
+"Sending…": "Envoi en cours…",
+"Thank you. Your message has been sent and Baganti will reply by email.": "Merci. Votre message a été envoyé et Baganti vous répondra par courriel.",
+"Your message could not be sent. Please try again or email": "Votre message n’a pas pu être envoyé. Veuillez réessayer ou écrire à"
 }
