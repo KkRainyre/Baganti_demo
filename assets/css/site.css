@@ -41,3 +41,12 @@
 @media (max-width:480px){.system-header{padding-left:16px;padding-right:16px}.system-brand{width:112px}.system-header-actions{gap:6px}.lang-switch button{font-size:11px;padding:8px 3px}}
 html[lang^=zh] body{word-break:normal;line-break:strict}
 html[lang^=zh] h1,html[lang^=zh] h2{letter-spacing:.02em}
+
+/* Phone widths: keep oversized headings and the closed drawer from widening the page */
+html,body{overflow-x:clip}
+@media (max-width:820px){.page-hero{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){
+.resource-family-intro h1{font-size:min(62px,12.5vw)}
+.master-product-media-hero .master-product-hero-copy h1{font-size:min(48px,11vw)}
+.page-hero h1{font-size:clamp(34px,12vw,60px)}
+}
