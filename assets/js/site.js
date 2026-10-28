@@ -23,21 +23,36 @@
        Pages are authored in English. assets/lang/<lang>.json maps each English text
        (whitespace-collapsed) to its translation; untranslated text stays English. */
     const LANGS = { en: 'en', zh: 'zh-Hans', fr: 'fr' };
-    const store = { get: () => { try { return localStorage.getItem('baganti-lang'); } catch (e) { return null; } },
-        set: v => { try { localStorage.setItem('baganti-lang', v); } catch (e) { /* private mode */ } } };
+    const keep = key => ({ get: () => { try { return localStorage.getItem(key); } catch (e) { return null; } },
+        set: v => { try { localStorage.setItem(key, v); } catch (e) { /* private mode */ } } });
+    const store = keep('baganti-lang'), geo = keep('baganti-geo-lang');
+    // Order: ?lang= in the URL, then the visitor's own choice, then location (Quebec -> French, elsewhere English).
     const pickLang = () => {
         const q = new URLSearchParams(location.search).get('lang');
         if (LANGS[q]) { store.set(q); return q; }
         const saved = store.get();
         if (LANGS[saved]) return saved;
-        const nav = (navigator.languages || [navigator.language || 'en']).map(l => l.slice(0, 2).toLowerCase());
-        return nav.find(l => LANGS[l]) || 'en';
+        const g = geo.get();
+        return LANGS[g] ? g : null;
     };
-    const LANG = pickLang();
+    // First visit only: look up the visitor's region (GeoJS, free, no key), giving up after 1.5 s.
+    const lookupLang = () => {
+        const ctl = new AbortController();
+        const timer = setTimeout(() => ctl.abort(), 1500);
+        return fetch('https://get.geojs.io/v1/ip/geo.json', { signal: ctl.signal })
+            .then(r => r.json())
+            .then(d => { const l = d.country_code === 'CA' && d.region === 'Quebec' ? 'fr' : 'en'; geo.set(l); return l; })
+            .catch(() => 'en')
+            .finally(() => clearTimeout(timer));
+    };
+    const known = pickLang();
+    let LANG = known || 'en';
+    const langReady = known ? Promise.resolve()
+        : lookupLang().then(l => { LANG = l; document.documentElement.lang = LANGS[LANG]; });
     let dict = {};
     const t = (s, n) => (dict[s] || s).replace('{n}', n);
     document.documentElement.lang = LANGS[LANG];
-    if (LANG !== 'en') {
+    if (LANG !== 'en' || !known) { // hide until translated (or, on a first visit, until the region lookup answers)
         document.documentElement.classList.add('i18n-loading');
         setTimeout(() => document.documentElement.classList.remove('i18n-loading'), 2500); // never leave the page hidden
     }
@@ -77,7 +92,7 @@
         });
     });
 
-    const start = () => Promise.all([...Array.from(document.querySelectorAll('[data-include]'), loadPartial), loadDict()])
+    const start = () => Promise.all([...Array.from(document.querySelectorAll('[data-include]'), loadPartial), langReady.then(loadDict)])
         .then(() => {
             translatePage();
             setupLangSwitch();
