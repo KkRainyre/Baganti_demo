@@ -2,7 +2,7 @@
 // App settings (Azure Static Web App > Environment variables):
 //   RESEND_API_KEY  required
 //   CONTACT_TO      inbox that receives the form, e.g. your Resend receiving address (default info@baganti.com)
-//   CONTACT_FROM    sender on a domain verified in Resend (default Baganti Website <website@baganti.com>)
+//   CONTACT_FROM    sender on a domain verified in Resend (default Baganti Website <website@deploymops.com>)
 const FIELDS = { requestType: 80, name: 120, company: 160, email: 200, family: 80, product: 120, stage: 80, message: 5000 };
 const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -35,7 +35,7 @@ module.exports = async function (context, req) {
         method: 'POST',
         headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            from: process.env.CONTACT_FROM || 'Baganti Website <website@baganti.com>',
+            from: process.env.CONTACT_FROM || 'Baganti Website <website@deploymops.com>',
             to: (process.env.CONTACT_TO || 'info@baganti.com').split(',').map(s => s.trim()),
             reply_to: d.email,
             subject: (d.requestType || 'Website inquiry') + ' — ' + (d.family || 'Baganti') + ' — ' + d.name,
